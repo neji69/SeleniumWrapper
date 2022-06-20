@@ -1,6 +1,6 @@
 package ru.neji69.example.wrapper.selenium.pageobjects;
 
-public abstract class HeaderSubMenuComponent extends HeaderMenuComponent {
+public abstract class HeaderSubMenuComponent {
 
     public static final String SITE_TESTING = "Тестирование сайта";
     public static final String FUNCTIONAL_TESTING = "Функциональное тестирование";

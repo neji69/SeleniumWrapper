@@ -2,7 +2,7 @@ package ru.neji69.example.wrapper.selenium.pageobjects;
 
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.$x;
 
-public class SiteTestingPage {
+public class SiteTestingPagePerformanceLab extends PerformanceLabAbstractPage {
 
     public String getCheckPricesButton() {
         return "//*[text()='Узнать цены']/parent::*/parent::a";

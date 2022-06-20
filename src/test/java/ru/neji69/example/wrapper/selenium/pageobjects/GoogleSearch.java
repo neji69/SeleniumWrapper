@@ -10,7 +10,7 @@ public class GoogleSearch {
         $x("//input[@name='q']").sendKeys(search + Keys.ENTER);
     }
 
-    public void clickToPerformanceLabSite() {
-        $x("//link[@href='https://www.performance-lab.ru/']//following::a").click();
+    public void clickToPerformanceLabLink() {
+        $x("//a[@href='https://www.performance-lab.ru/']").click();
     }
 }

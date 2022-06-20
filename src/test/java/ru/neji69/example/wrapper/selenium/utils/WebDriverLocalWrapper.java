@@ -68,7 +68,7 @@ public class WebDriverLocalWrapper extends RemoteWebElement {
     }
 
     public static WebElement shouldBe(ExpectedCondition<WebElement> webElementExpectedCondition) {
-        WebDriverWait wait = new WebDriverWait(getInstanceWebDriver(), Duration.ofSeconds(60));
+        WebDriverWait wait = new WebDriverWait(getInstanceWebDriver(), Duration.ofSeconds(15));
         return wait.until(webElementExpectedCondition);
     }
 

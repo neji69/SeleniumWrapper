@@ -24,6 +24,11 @@ dependencies {
 
 }
 
+tasks.withType(JavaCompile::class) {
+    options.encoding = "UTF-8"
+}
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", true)
 }

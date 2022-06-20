@@ -1,28 +1,39 @@
 package ru.neji69.example.wrapper.selenium;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
+import ru.neji69.example.wrapper.selenium.pageobjects.HeaderMenuComponent;
+import ru.neji69.example.wrapper.selenium.pageobjects.HeaderSubMenuComponent;
 import ru.neji69.example.wrapper.selenium.pageobjects.MainPage;
-import ru.neji69.example.wrapper.selenium.utils.DriverExtensions;
+import ru.neji69.example.wrapper.selenium.pageobjects.SiteTestingPage;
 
-import static ru.neji69.example.wrapper.selenium.utils.Utils.*;
+import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
 
-@ExtendWith(DriverExtensions.class)
 public class SeleniumTests {
 
     @Test
-    void mailRuTest(WebDriver driver) {
+    @DisplayName(" Услуги и продукты -> " +
+            "Тестирование сайта (перейти), " +
+            "проверить что кнопка \"Узнать цены\" раскрашена синим цветом")
+    void performanceLabRuTest() {
 
-        MainPage mainPageMailRu = new MainPage(driver);
+        String rgbaExpected = "rgba(79, 173, 255, 1)";
+        String rgbaActual;
 
-        int randomNews = (int) (Math.random() * 16);
+        open("https://www.performance-lab.ru/");
 
-        mainPageMailRu.getNewsContent().isDisplayed();
-        String selectedNewsItemFromList = mainPageMailRu.choiceNewsItemFromList(randomNews).getText();
-        mainPageMailRu.choiceNewsItemFromList(randomNews).click();
+        MainPage mainPage = new MainPage();
+        mainPage.closePopUp();
+        mainPage.moveToElementsFromMenu(HeaderMenuComponent.SERVICES_AND_PRODUCTS_MENU);
+        mainPage.clickFromSubMenu(HeaderSubMenuComponent.SITE_TESTING);
 
-        System.out.println();
-        $text(selectedNewsItemFromList).isDisplayed();
+        switchTo().window(getWindows().get(1));
+
+        SiteTestingPage siteTestingPage = new SiteTestingPage();
+        rgbaActual = siteTestingPage.getBackgroundColorElement(siteTestingPage.getCheckPricesButton());
+
+        Assertions.assertThat(rgbaActual).isEqualTo(rgbaExpected);
     }
+
 }

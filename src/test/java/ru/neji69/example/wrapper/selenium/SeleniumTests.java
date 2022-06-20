@@ -3,10 +3,7 @@ package ru.neji69.example.wrapper.selenium;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.neji69.example.wrapper.selenium.pageobjects.HeaderMenuComponent;
-import ru.neji69.example.wrapper.selenium.pageobjects.HeaderSubMenuComponent;
-import ru.neji69.example.wrapper.selenium.pageobjects.MainPage;
-import ru.neji69.example.wrapper.selenium.pageobjects.SiteTestingPage;
+import ru.neji69.example.wrapper.selenium.pageobjects.*;
 
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
 
@@ -21,7 +18,12 @@ public class SeleniumTests {
         String rgbaExpected = "rgba(79, 173, 255, 1)";
         String rgbaActual;
 
-        open("https://www.performance-lab.ru/");
+        open("https://www.google.com/");
+//        open("https://www.performance-lab.ru/");
+
+        GoogleSearch googleSearch = new GoogleSearch();
+        googleSearch.search("performance lab");
+        googleSearch.clickToPerformanceLabSite();
 
         MainPage mainPage = new MainPage();
         mainPage.closePopUp();

@@ -5,7 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.neji69.example.wrapper.selenium.pageobjects.*;
+
+import java.time.Duration;
 
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
 
@@ -59,30 +62,7 @@ public class SeleniumTests {
         mainPage.clickFromSubMenu(HeaderSubMenuComponent.AUTOMATION_TESTING);
 
         AutomationTestingPagePerformanceLab automationTestingPage = new AutomationTestingPagePerformanceLab();
-//        automationTestingPage.clickToImageAndCheckFormContact();
-
-        automationTestingPage.scrollToElement("//strong[text()= 'Узнайте как мы помогли банку из ТОП-10 автоматизировать тестирование']//..//following-sibling::p//img");
-        $x("//strong[text()= 'Узнайте как мы помогли банку из ТОП-10 автоматизировать тестирование']//..//following-sibling::p//img").click();
-        switchTo().frame($x("//iframe[@id='hubspot-Modal-Iframe']"));
-        shouldBe(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='скачивание брошюры']")));
-        $x("//*[text()='скачивание брошюры']");
-
-//        Assertions.assertThat(rgbaActual).isEqualTo(rgbaExpected);
-    }
-
-    @Test
-    void performanceLabRu_debagingTest() {
-
-        open("https://www.performance-lab.ru/avtomatizacija-testirovanija");
-        AutomationTestingPagePerformanceLab automationTestingPage = new AutomationTestingPagePerformanceLab();
-        automationTestingPage.scrollToElement("//strong[text()= 'Узнайте как мы помогли банку из ТОП-10 автоматизировать тестирование']//..//following-sibling::p//img");
-        $x("//strong[text()= 'Узнайте как мы помогли банку из ТОП-10 автоматизировать тестирование']//..//following-sibling::p//img").click();
-        switchTo().frame($x("//iframe[@id='hubspot-Modal-Iframe']"));
-        shouldBe(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
-        String text = "gettext -----" + $x("//h1").getText();
-        String text1 = "getAccessibleName -----" + $x("//h1").getAccessibleName();
-        String text2 = "getTagName -----" + $x("//h1").getTagName();
-        $x("//*[text()='скачивание брошюры']");
+        automationTestingPage.clickToImageAndCheckFormContact();
 
     }
 

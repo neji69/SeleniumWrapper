@@ -3,12 +3,7 @@ package ru.neji69.example.wrapper.selenium;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.neji69.example.wrapper.selenium.pageobjects.*;
-
-import java.time.Duration;
 
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
 
@@ -24,20 +19,26 @@ public class SeleniumTests {
         String rgbaActual;
 
         open("https://www.google.com/");
+        new GoogleSearch().search("performance lab").clickToPerformanceLabLink();
 
-        GoogleSearch googleSearch = new GoogleSearch();
-        googleSearch.search("performance lab");
-        googleSearch.clickToPerformanceLabLink();
 
-        MainPagePerformanceLab mainPage = new MainPagePerformanceLab();
-        mainPage.closePopUp();
-        mainPage.moveToElementsFromMenu(HeaderMenuComponent.SERVICES_AND_PRODUCTS_MENU);
-        mainPage.clickFromSubMenu(HeaderSubMenuComponent.SITE_TESTING);
+        MainPage mainPage = new MainPage();
+        String headerMenu = mainPage.getHeaderMenu().BLOG_MENU;
+        String subMenu = mainPage.getHeaderMenu().getSubMenu().SITE_TESTING;
+
+
+        mainPage.closePopUp()
+                .moveToElementsFromMenu(headerMenu)
+                .clickToSubMenu(subMenu);
+//        mainPage.moveToElementsFromMenu(SERVICES_AND_PRODUCTS_MENU);
+//        mainPage.clickToSubMenu(HeaderSubMenuComponent.SITE_TESTING);
+//        mainPage.moveToElementsFromMenu(headerMenu).clickToSubMenu(subMenu);
 
         switchTo().window(getWindows().get(1));
 
-        SiteTestingPagePerformanceLab siteTestingPage = new SiteTestingPagePerformanceLab();
-        rgbaActual = siteTestingPage.getBackgroundColorElement(siteTestingPage.getCheckPricesButton());
+        SiteTestingPage siteTestingPage = new SiteTestingPage();
+        String button = siteTestingPage.getCheckPricesButton();
+        rgbaActual = siteTestingPage.getBackgroundColorElement(button);
 
         Assertions.assertThat(rgbaActual).isEqualTo(rgbaExpected);
     }
@@ -56,13 +57,13 @@ public class SeleniumTests {
         googleSearch.search("performance lab");
         googleSearch.clickToPerformanceLabLink();
 
-        MainPagePerformanceLab mainPage = new MainPagePerformanceLab();
-        mainPage.closePopUp();
-        mainPage.moveToElementsFromMenu(HeaderMenuComponent.SERVICES_AND_PRODUCTS_MENU);
-        mainPage.clickFromSubMenu(HeaderSubMenuComponent.AUTOMATION_TESTING);
+        MainPage mainPage = new MainPage();
+        String menu = mainPage.getHeaderMenu().SERVICES_AND_PRODUCTS_MENU;
+        String subMenu = mainPage.getHeaderMenu().getSubMenu().AUTOMATION_TESTING;
+        mainPage.closePopUp().moveToElementsFromMenu(menu).clickToSubMenu(subMenu);
 
-        AutomationTestingPagePerformanceLab automationTestingPage = new AutomationTestingPagePerformanceLab();
-        automationTestingPage.clickToImageAndCheckFormContact();
+        AutomationTestingPage automationTestingPage = new AutomationTestingPage();
+        automationTestingPage.clickToImage().checkFormContact();
 
     }
 

@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -19,6 +20,10 @@ public class WebDriverLocalWrapper extends RemoteWebElement {
     private static final ThreadLocal<WebDriver> THREAD_LOCAL = ThreadLocal.withInitial(() ->
             WebDriverManager.chromedriver().create());
 
+    static String xpathOrCssLocator = null;
+    static By byLocator = null;
+
+
     // Через метод будем получать инстанс хромдрайвера и использовать его везде, где нам нужно.
     public static WebDriver getInstanceWebDriver() {
         return THREAD_LOCAL.get();
@@ -29,19 +34,41 @@ public class WebDriverLocalWrapper extends RemoteWebElement {
     }
 
     // Вызов поиска элемента, по xpath
-    public static WebElement $x(String xpathExpression) {
-        return getInstanceWebDriver().findElement(By.xpath(xpathExpression));
+    public static WebDriverLocalWrapper $x(String xpathExpression) {
+        saveXpathOrCssLocator(xpathExpression);
+        return (WebDriverLocalWrapper) getInstanceWebDriver().findElement(By.xpath(xpathExpression));
+    }
+
+    private static void saveXpathOrCssLocator(String xpathOrCssLocator) {
+        WebDriverLocalWrapper.xpathOrCssLocator = xpathOrCssLocator;
+    }
+
+    private static void saveByLocator(By byLocator) {
+        WebDriverLocalWrapper.byLocator = byLocator;
+    }
+
+    private static By stringLocatorToByLocator(String xpathOrCssLocator) {
+
+        if (xpathOrCssLocator.contains("//")) {
+            return By.xpath(xpathOrCssLocator);
+        } else return By.cssSelector(xpathOrCssLocator);
+
     }
 
     // Вызов поиска элемента, по cssSelector
-    public static WebElement $(String cssSelector) {
-        return getInstanceWebDriver().findElement(
+    public static WebDriverLocalWrapper $s(String cssSelector) {
+        saveXpathOrCssLocator(cssSelector);
+        return (WebDriverLocalWrapper) getInstanceWebDriver().findElement(
                 By.cssSelector(cssSelector));
     }
 
+    public static WebDriverLocalWrapper $(By locator) {
+        return (WebDriverLocalWrapper) getInstanceWebDriver().findElement(locator);
+    }
+
     // Вызов поиска элемента, по тексту
-    public static WebElement $text(String linkText) {
-        return getInstanceWebDriver().findElement(
+    public static WebDriverLocalWrapper $text(String linkText) {
+        return (WebDriverLocalWrapper) getInstanceWebDriver().findElement(
                 By.linkText(linkText));
     }
 
@@ -67,9 +94,25 @@ public class WebDriverLocalWrapper extends RemoteWebElement {
         return new ArrayList<>(getInstanceWebDriver().getWindowHandles());
     }
 
-    public static WebElement shouldBe(ExpectedCondition<WebElement> webElementExpectedCondition) {
+    public static WebDriverLocalWrapper shouldBe(ExpectedCondition<WebElement> webElementExpectedCondition) {
         WebDriverWait wait = new WebDriverWait(getInstanceWebDriver(), Duration.ofSeconds(15));
-        return wait.until(webElementExpectedCondition);
+        return (WebDriverLocalWrapper) wait.until(webElementExpectedCondition);
+    }
+
+    public static WebElement shouldBe(WebConditionals webConditionals) {
+
+        if (xpathOrCssLocator == null) throw new NullPointerException();
+
+        WebDriverWait wait = new WebDriverWait(getInstanceWebDriver(), Duration.ofSeconds(15));
+
+        return switch (webConditionals.name()) {
+            case ("visible") ->
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(stringLocatorToByLocator(xpathOrCssLocator)));
+
+            case ("present") ->
+                    wait.until(ExpectedConditions.presenceOfElementLocated(stringLocatorToByLocator(xpathOrCssLocator)));
+            default -> throw new IllegalStateException("Unexpected value");
+        };
     }
 
 }

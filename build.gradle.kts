@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation("org.seleniumhq.selenium:selenium-java:4.1.4")
     testImplementation("io.github.bonigarcia:webdrivermanager:5.2.0")
-    testImplementation("io.github.bonigarcia:selenium-jupiter:4.1.0")
+    testImplementation("io.qameta.allure:allure-junit5:2.18.1")
 
 }
 

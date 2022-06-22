@@ -6,8 +6,9 @@ import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.$x;
 
 public class GoogleSearch {
 
-    public void search(String search){
+    public GoogleSearch search(String search) {
         $x("//input[@name='q']").sendKeys(search + Keys.ENTER);
+        return this;
     }
 
     public void clickToPerformanceLabLink() {

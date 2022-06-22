@@ -1,17 +1,17 @@
-package ru.neji69.example.wrapper.selenium.pageobjects;
+package ru.neji69.example.wrapper.selenium.pageobjects.components;
 
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.$x;
 import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.moveToElement;
 
-public abstract class PerformanceLabAbstractPage extends HeaderMenuComponent {
+public interface HeaderMenuNavigate<T> {
 
-    @Override
-    public void moveToElementsFromMenu(String menuName) {
+    default T moveToElementsFromMenu(String menuName) {
         moveToElement($x("//*[.='" + menuName + "']")).perform();
+        return (T) this;
     }
 
-    @Override
-    public void clickFromSubMenu(String subMenuName) {
+    default void clickToSubMenu(String subMenuName) {
         $x("//div[@id='nav_top']//*[text()='" + subMenuName + "']").click();
     }
+
 }

@@ -3,10 +3,13 @@ package ru.neji69.example.wrapper.selenium;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
 import ru.neji69.example.wrapper.selenium.pageobjects.*;
 
-import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
+import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
+import static ru.neji69.example.wrapper.selenium.utils.SeleniumWebDriverWrapperImpl.*;
 
+@Execution(CONCURRENT)
 public class SeleniumTests {
 
     @Test
@@ -19,28 +22,20 @@ public class SeleniumTests {
         String rgbaActual;
 
         open("https://www.google.com/");
-        new GoogleSearch().search("performance lab").clickToPerformanceLabLink();
+        new GoogleSearch()
+                .search("performance lab")
+                .clickToPerformanceLabLink();
 
 
-        MainPage mainPage = new MainPage();
-        String headerMenu = mainPage.getHeaderMenu().BLOG_MENU;
-        String subMenu = mainPage.getHeaderMenu().getSubMenu().SITE_TESTING;
+        new MainPage().closePopUp()
+                .navigateToServicesAndProductsMenu()
+                .navigateToSiteTestingSubMenu();
 
+        switchTo().window(getWindows().get(1)); //переключаемся на новую открытую вкладку.
 
-        mainPage.closePopUp()
-                .moveToElementsFromMenu(headerMenu)
-                .clickToSubMenu(subMenu);
-//        mainPage.moveToElementsFromMenu(SERVICES_AND_PRODUCTS_MENU);
-//        mainPage.clickToSubMenu(HeaderSubMenuComponent.SITE_TESTING);
-//        mainPage.moveToElementsFromMenu(headerMenu).clickToSubMenu(subMenu);
+        rgbaActual = new SiteTestingPage().getBackgroundColorElement();
 
-        switchTo().window(getWindows().get(1));
-
-        SiteTestingPage siteTestingPage = new SiteTestingPage();
-        String button = siteTestingPage.getCheckPricesButton();
-        rgbaActual = siteTestingPage.getBackgroundColorElement(button);
-
-        Assertions.assertThat(rgbaActual).isEqualTo(rgbaExpected);
+        Assertions.assertThat(rgbaActual).isEqualTo(rgbaExpected); //Проверяем что цвет совпадает с "rgba(79, 173, 255, 1)"
     }
 
     @Test
@@ -52,19 +47,17 @@ public class SeleniumTests {
     void performanceLabRu_checkOpenFormToContactsTest() {
 
         open("https://www.google.com/");
+        new GoogleSearch()
+                .search("performance lab")
+                .clickToPerformanceLabLink();
 
-        GoogleSearch googleSearch = new GoogleSearch();
-        googleSearch.search("performance lab");
-        googleSearch.clickToPerformanceLabLink();
+        new MainPage()
+                .closePopUp()
+                .navigateToServicesAndProductsMenu()
+                .navigateToAutomationTestingSubMenu();
 
-        MainPage mainPage = new MainPage();
-        String menu = mainPage.getHeaderMenu().SERVICES_AND_PRODUCTS_MENU;
-        String subMenu = mainPage.getHeaderMenu().getSubMenu().AUTOMATION_TESTING;
-        mainPage.closePopUp().moveToElementsFromMenu(menu).clickToSubMenu(subMenu);
-
-        AutomationTestingPage automationTestingPage = new AutomationTestingPage();
-        automationTestingPage.clickToImage().checkFormContact();
-
+        new AutomationTestingPage()
+                .clickToImage()
+                .checkFormContact();
     }
-
 }

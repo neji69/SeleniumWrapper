@@ -1,8 +1,8 @@
 package ru.neji69.example.wrapper.selenium.pageobjects;
 
-import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.$x;
+import static ru.neji69.example.wrapper.selenium.utils.SeleniumWebDriverWrapperImpl.$x;
 
-public class SiteTestingPage {
+public class SiteTestingPage extends BasePage<AutomationTestingPage> {
 
     public String getCheckPricesButton() {
         return "//*[text()='Узнать цены']/parent::*/parent::a";

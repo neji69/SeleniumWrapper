@@ -7,21 +7,18 @@ import ru.neji69.example.wrapper.selenium.utils.WebConditionals;
 
 import java.time.Duration;
 
-import static ru.neji69.example.wrapper.selenium.utils.WebDriverLocalWrapper.*;
+import static ru.neji69.example.wrapper.selenium.utils.SeleniumWebDriverWrapperImpl.$x;
+import static ru.neji69.example.wrapper.selenium.utils.SeleniumWebDriverWrapperImpl.getInstanceWebDriver;
 
 public class AutomationTestingPage extends BasePage<AutomationTestingPage> {
 
-    public String getImageXpath() {
-        return "//img[@alt='автоматизация тестирования']";
-    }
-
     public void scrollToElement(String xpathLocator) {
-        executeJavaScript("arguments[0].scrollIntoView(true);", $x(xpathLocator));
+        $x(xpathLocator).executeJavaScript("arguments[0].scrollIntoView(true);");
     }
 
     public AutomationTestingPage clickToImage() {
-        scrollToElement(getImageXpath());
-        $x(getImageXpath()).click();
+        scrollToElement("//img[@alt='автоматизация тестирования']");
+        $x("//img[@alt='автоматизация тестирования']").click();
         return this;
     }
 
@@ -34,9 +31,7 @@ public class AutomationTestingPage extends BasePage<AutomationTestingPage> {
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By
                 .xpath("//iframe[@id='hs-form-iframe-0']")));
 
-//        shouldBe(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='скачивание брошюры']")));
         $x("//*[text()='скачивание брошюры']").shouldBe(WebConditionals.VISIBLE);
-
         return this;
     }
 }

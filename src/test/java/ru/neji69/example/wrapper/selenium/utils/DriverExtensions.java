@@ -7,7 +7,7 @@ import java.time.Duration;
 
 public class DriverExtensions implements AfterEachCallback, BeforeEachCallback {
 
-    private final WebDriver driver = WebDriverLocalWrapper.getInstanceWebDriver();
+    private final WebDriver driver = SeleniumWebDriverWrapperImpl.getInstanceWebDriver();
 
     @Override
     public void beforeEach(ExtensionContext context) {

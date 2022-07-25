@@ -4,15 +4,6 @@ import static ru.neji69.example.wrapper.selenium.utils.SeleniumWebDriverWrapperI
 
 public interface HeaderMenuNavigate<T> {
 
-    default T moveToElementsFromMenu(String menuName) {
-        $x("//*[.='" + menuName + "']").moveToElement().perform();
-        return (T) this;
-    }
-
-    default void clickToSubMenu(String subMenuName) {
-        $x("//div[@id='nav_top']//*[text()='" + subMenuName + "']").click();
-    }
-
     //Передвинуть курсор на пункт меню - Услуги и продукты
     default T navigateToServicesAndProductsMenu() {
         $x("//*[.='Услуги и продукты']").moveToElement().perform();
